@@ -318,10 +318,11 @@
 	};
 
 	ComponentLoader.prototype.addComponentsEvents = function(elem) {
-		if(elem.js && elem.js.addEvents)
-			elem.js.addEvents();
+		// console.log(elem);
 
 		for(var i=0; i<elem.comNodes.length; i++){
+			if(elem.comNodes[i] && elem.comNodes[i].js.addEvents)
+				elem.comNodes[i].js.addEvents();
 			this.addComponentsEvents(elem.comNodes[i]);
 		}
 	};
@@ -332,7 +333,7 @@
 
 		for (var module in tempModules){
 			this.COM.modules[module] = new tempModules[module].constructor();
-			this.COM.modules[module].html = document.body;
+			this.COM.modules[module].html = this.COM;
 			this.COM.modules[module].addEvents();
 		}
 	};
@@ -429,11 +430,13 @@
 	};
 
 	ComponentLoader.prototype.emit = function(eventName, data) {
-		return this.html.dispatchEvent(new CustomEvent(eventName, {
-	  	bubbles: true,
-	  	cancelable: true,
-	  	detail: data
-	  }));
+
+		return this.html.dispatchEvent(new CustomEvent(eventName, { 
+			bubbles: true,
+			cancelable: true,
+			detail: data
+		}));
+		
 	};
 
 	/*adds custom events support for ie9-11*/
