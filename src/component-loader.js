@@ -166,8 +166,11 @@
 					 + this.status + " (" + this.statusText + ")"
 				);
 			} else {
+				var jsCode = "/*# sourceURL=" + path + "/" + xhr.name + ".js*/"
+															 + this.responseText;
+
 				self.components[this.name] = self.components[this.name] || {};
-				self.components[this.name].constructor = eval(this.responseText);
+				self.components[this.name].constructor = eval(jsCode);
 				self.components[this.name].constructor.prototype
 					.emit = self.emit;
 				self.components[this.name].constructor.prototype
